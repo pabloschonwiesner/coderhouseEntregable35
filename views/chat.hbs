@@ -1,0 +1,43 @@
+<div class="container">
+  <div class="nav-wrapper teal white-text row">
+    <p class="left">Bienvenido {{ usuario }}</p>
+    <ul class="right">
+      <li>
+        <a href="/salir" class="white-text">
+          <i class="material-icons white-text">exit_to_app</i>
+          Salir
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="row s12">
+    <div id="centroMensajes">
+      <h1>Centro de mensajes</h1>
+
+      <form id="chat">
+        <input type="text" class="email" id="emailChat" placeholder="email@email.com">
+        <input type="text" class="nombre" id="nombre" placeholder="Luis">
+        <input type="text" class="apellido" id="apellido" placeholder="Lopez">
+        <input type="number" class="edad" id="edad" placeholder="28">
+        <input type="text" class="alias" id="alias" placeholder="Lucho">
+        <label for="thumbnail" class="form-label">Avatar</label>
+        <select name="avatar" id="avatar" class="form-select" value="">
+            <option selected>Seleccionar un avatar</option>
+              <option value="https://cdn3.iconfinder.com/data/icons/education-209/64/calculator-math-tool-school-512.png">Calculadora</option>
+              <option value="https://cdn3.iconfinder.com/data/icons/education-209/64/paint-color-pallete-brush-academy-512.png">Paleta colores</option>
+              <option value="https://cdn3.iconfinder.com/data/icons/education-209/64/globe-earth-geograhy-planet-school-512.png">Globo terráqueo</option>
+              <option value="https://cdn3.iconfinder.com/data/icons/education-209/64/clock-stopwatch-timer-time-512.png">Reloj</option>
+        </select>
+        <input type="text" class="message" id="message" placeholder="Ingrese un mensaje">
+        <button id="enviarMensaje" class="btn btn-primary" disabled="true">Enviar</button>
+      </form>
+      <ul id="lista"></ul>
+    </div>
+
+  </div>
+  </div>
+
+
+
+  
+</div>

@@ -1,0 +1,87 @@
+<div class="container">
+  <div class="nav-wrapper teal white-text row">
+    <p class="left">Bienvenido {{ usuario }}</p>
+    <ul class="right">
+      <li>
+        <a href="/salir" class="white-text">
+          <i class="material-icons white-text">exit_to_app</i>
+          Salir
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="row s12">
+    <div class="col s6">
+      <form action="/producto" method="post">
+        <div class="row s12">
+          <div class="col s12">
+            <div class="input-field">
+              <input name="title" type="text" class="validate" placeholder="Titulo" id="title" onkeyup="deshabilitarBotonEnviar()">
+              <label for="title">Titulo</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="row s12">
+          <div class="col s12">
+            <div class="input-field">
+              <input name="price" type="number" class="validate" placeholder="Precio" id="price" onkeyup="deshabilitarBotonEnviar()">
+              <label for="price">Precio</label>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row s12">
+          <div class="col s12">
+            <div class="input-field">
+              <!-- <input name="imagen" type="text" class="validate" placeholder="Seleccionar imagen" id="imagen" onkeyup="deshabilitarBotonRegistro()"> -->
+              <select name="thumbnail" id="thumbnail" onchange="deshabilitarBotonEnviar()">
+                <option value="" selected disabled></option>
+                <option data-icon="https://cdn3.iconfinder.com/data/icons/education-209/64/calculator-math-tool-school-512.png" value="https://cdn3.iconfinder.com/data/icons/education-209/64/calculator-math-tool-school-512.png">Calculadora</option>
+                <option data-icon="https://cdn3.iconfinder.com/data/icons/education-209/64/paint-color-pallete-brush-academy-512.png" value="https://cdn3.iconfinder.com/data/icons/education-209/64/paint-color-pallete-brush-academy-512.png">Paleta colores</option>
+                <option data-icon="https://cdn3.iconfinder.com/data/icons/education-209/64/globe-earth-geograhy-planet-school-512.png" value="https://cdn3.iconfinder.com/data/icons/education-209/64/globe-earth-geograhy-planet-school-512.png">Globo terráqueo</option>
+                <option data-icon="https://cdn3.iconfinder.com/data/icons/education-209/64/clock-stopwatch-timer-time-512.png" value="https://cdn3.iconfinder.com/data/icons/education-209/64/clock-stopwatch-timer-time-512.png">Reloj</option>
+                <option data-icon="https://cdn3.iconfinder.com/data/icons/education-209/64/board-math-class-school-512.png" value="https://cdn3.iconfinder.com/data/icons/education-209/64/board-math-class-school-512.png">Pizarrón</option>
+                <option data-icon="https://cdn3.iconfinder.com/data/icons/education-209/64/book-note-paper-school-512.png" value="https://cdn3.iconfinder.com/data/icons/education-209/64/book-note-paper-school-512.png">Cuaderno</option>
+                <option data-icon="https://cdn3.iconfinder.com/data/icons/education-209/64/tube-lab-science-school-512.png" value="https://cdn3.iconfinder.com/data/icons/education-209/64/tube-lab-science-school-512.png">Tubo ensayo</option>
+                <option data-icon="https://cdn3.iconfinder.com/data/icons/education-209/64/graduation-square-academic-cap-school-512.png" value="https://cdn3.iconfinder.com/data/icons/education-209/64/graduation-square-academic-cap-school-512.png">Sombrero egresado</option>
+                <option data-icon="https://cdn3.iconfinder.com/data/icons/education-209/64/bag-pack-container-school-512.png" value="https://cdn3.iconfinder.com/data/icons/education-209/64/bag-pack-container-school-512.png">Mochila</option>
+              </select>
+              <label for="thumbnail">Imagen</label>
+            </div>
+          </div>
+        </div>
+
+        
+      </form>
+    </div>
+
+    <div class="col s6">
+      <a href="/chat" class="waves-effect waves-ligth btn-large">
+        <i class="material-icons ">chat_bubble_outline</i>
+        Ir al Chat
+      </a>
+    </div>
+  </div>
+
+
+
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Foto</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each productos}}
+        <tr>
+          <td>{{this.title}}</td>
+          <td>{{this.price}}</td>
+          <td><img src={{this.thumbnail}} class="rounded" width="50" height="50" /></td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>

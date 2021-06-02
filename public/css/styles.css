@@ -1,0 +1,30 @@
+.nav-wrapper {
+  padding: 5px;
+  font-size: 2rem;
+  margin-bottom: 40px;
+}
+
+.dato { 
+  font-size: 1.5rem;
+}
+
+.visitas {
+  font-weight: bold;
+  font-size: 2rem;
+}
+
+h6 { color: #ccc}
+
+table {
+  margin-top: 40px;
+}
+
+.usuarioExistente {
+  color: red;
+  
+}
+
+.emailStyle { font-weight: bold; color: blue; margin-right: 15px; }
+.fechaHoraStyle { color: brown; margin-right: 15px; }
+.mensajeStyle { color: green; font-style: italic;}
+.btn-facebook { margin-top: 30px}

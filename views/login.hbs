@@ -1,0 +1,40 @@
+<div class="container">
+  <form action="/ingresar" method="post">
+    <div class="nav-wrapper teal white-text">
+      <p>Login</p>
+    </div>
+    {{#if usuarioExistente}}
+      <div class="row">
+        <p class="usuarioExistente">Su usuario ya existe. Inicie sesión.</p>
+      </div>
+    {{/if}}
+    <div class="row">
+      <div class="col s12">
+        <div class="input-field col s6">
+          <input name="usuario" type="text" class="validate" placeholder="Nombre de usuario" id="usuario">
+          <label for="usuario">Usuario</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col s12">
+        <div class="input-field col s6">
+          <input name="password" type="text" class="validate" placeholder="Contraseña" id="password">
+          <label for="password">Contraeña</label>
+        </div>
+      </div>
+    </div>
+    {{#if passwordIncorrecto}}
+      <div class="row">
+        <p class="usuarioExistente">Usuario y/o password incorrecto.</p>
+      </div>
+    {{/if}}
+    <button type="submit" class="waves-effect waves-light btn-large">Ingresar</button>
+    <button formaction="/register" formmethod="GET" class="waves-effect waves-light btn-large teal lighten-5 teal-text">Registrarse</button>
+    <div class="row">
+      <button formaction="/auth/facebook" formmethod="GET" class="waves-effect waves-light btn-large blue darken-4 btn-facebook">Ingresar con Facebook</button>
+    </div>
+  </form>
+
+  </div>
