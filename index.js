@@ -8,16 +8,51 @@ require('dotenv').config()
 const bcrypt = require('bcrypt')
 const MongoStore = require('connect-mongo')
 const mongoose = require('mongoose')
+const nodemailer = require('nodemailer')
 const Usuario = require('./models/usuario.model')
 
 const ProductoServicio = require('./services/producto.service')
 const UsuarioServicio = require('./services/usuario.service')
 const MensajeServicio = require('./services/mensaje.service')
 
+
+
 const app = express()
 let productoServicio = new ProductoServicio()
 const usuarioServicio = new UsuarioServicio()
 const mensajeServicio = new MensajeServicio()
+
+const transporter = nodemailer.createTransport({
+  host: 'smtp.ethereal.email',
+  port: 587,
+  secure: false,
+  auth: {
+      user: 'evie57@ethereal.email',
+      pass: 'jZ8mCUm4cTRqsRudRU'
+  }
+});
+
+const transporterGmail = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  auth: {
+      user: process.env.MAIL_GMAIL,
+      pass: process.env.PASS_GMAIL
+  }
+});
+
+const mailOptions = {
+  from: 'Servidor Node.js',
+  to: 'evie57@ethereal.email',
+  subject: 'Mail de prueba',
+  html: '<h1 style="color: blue;"> prueba </h1>'
+}
+
+const mailOptionsGmail = {
+  from: 'Servidor Node.js',
+  to: process.env.MAIL_GMAIL,
+  subject: 'Mail de prueba',
+  html: '<h1 style="color: blue;"> prueba </h1>'
+}
 
 let facebookId, facebookSecret, port, arrObj = []
 
@@ -88,6 +123,8 @@ passport.use('login', new LocalStrategy({usernameField: 'usuario', passwordField
         if(!validarPassword(password, usuarioDB[0].password)) {
           return cb(null, false)
         }
+        sendMailEthereal(usuarioDB, 'login')
+        sendMailGmail(usuarioDB)
         return cb(null, usuarioDB[0])
       } else {
         return cb(null, false)
@@ -104,22 +141,61 @@ passport.use('facebook', new FacebookStrategy({
   async ( accessToken, refreshToken, profile, cb) => { 
     try {
       let usuarioDB = await usuarioServicio.getUserByIdFacebook( profile.id )
-      if(usuarioDB) {
-        return cb(null, usuarioDB)
-      } else {
-        // loggerWarn.warn('No existe el usuario y se va a crear')
-        let newUser = await usuarioServicio.add( profile )
-        return cb(null, newUser)
+      
+      if(!usuarioDB) {
+        usuarioDB = await usuarioServicio.add( profile )
       }
+
+      sendMailEthereal(usuarioDB, 'login')
+      sendMailGmail(usuarioDB)
+      return cb(null, usuarioDB)
     } catch ( err ) { return cb(err)}
   })
 )
+
+function sendMailEthereal (usuario, accion) {
+  let options = Object.assign({}, mailOptions)
+  let mensaje = `${accion} usuario ${usuario.usuario} ${Date()}`
+
+  options.subject = mensaje
+  options.html = `<h1 style="color: blue;"> ${mensaje} </h1>`
+
+  transporter.sendMail(options, (err, info) => {
+    if(err) {
+      console.log(err);
+      return err
+    }
+    console.log(info);
+    return
+  })
+}
+
+function sendMailGmail (usuario) {
+  let options = Object.assign({}, mailOptionsGmail)
+  let mensaje = `login usuario ${usuario.usuario} ${Date()}`
+
+  options.subject = mensaje
+  options.to = usuario.email
+  options.html = `<h1 style="color: blue;"> ${mensaje} </h1>
+  <div><img src=${usuario.picture} width="100" height="100"/></div>
+  `
+
+  transporterGmail.sendMail(options, (err, info) => {
+    if(err) {
+      console.log(err);
+      return err
+    }
+    console.log(info);
+  })
+}
+
+
 
 app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email'] }))
 
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login'}), (req, res) => {
   req.session.facebookId = req.user.facebookId
-  res.redirect(`/perfil`)
+  res.redirect(`/producto`)
 })
 
 
@@ -187,8 +263,11 @@ app.post('/ingresar', passport.authenticate('login', { failureRedirect: '/login?
   } catch ( err ) { console.log(err) }
 })
 
-app.get('/salir', (req, res) => {
+app.get('/salir', async (req, res) => {
+  let usuarioDB = await usuarioServicio.getById(req.session.passport.user)
+  
   req.session.destroy( () => {
+    sendMailEthereal(usuarioDB, 'logout')
     res.redirect('/')
   })
 })

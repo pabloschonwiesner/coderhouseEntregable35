@@ -4,7 +4,7 @@ const Usuario = require('./../models/usuario.model')
 class UsuarioServicio {
 
   async getById ( id ) {
-    return await Usuario.findById(ObjectID(id))    
+    return await Usuario.findById(id)    
   }
 
   async getOne ( id ) {
